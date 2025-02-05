@@ -1,12 +1,18 @@
+import { prisma } from "@/libs/prisma.config";
 import Post from "./Post";
 
-const Feed = () => {
+const Feed = async () => {
+  const posts = await prisma.post.findMany();
+
+  console.log(posts, "<---feedcomponent");
+
   return (
     <section className="b-rose-600">
-      <Post />
-      <Post />
-      <Post />
-      <Post />
+      {posts.map((post) => (
+        <div key={post.id}>
+          <Post />
+        </div>
+      ))}
     </section>
   );
 };

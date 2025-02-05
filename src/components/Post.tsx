@@ -29,7 +29,7 @@ const Post = async ({ type }: { type?: "status" | "comment" }) => {
 
   const fileDetails = await getFileDetails("67a1b294432c476416c41eee");
 
-  console.log(fileDetails);
+  // console.log(fileDetails);
 
   return (
     <div className="b-emerald-500 p-4 border-y-[1px] border-borderGray">

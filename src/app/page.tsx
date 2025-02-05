@@ -2,7 +2,7 @@ import Feed from "@/components/Feed";
 import Share from "@/components/Share";
 import Link from "next/link";
 
-const Homepage = () => {
+const Homepage = async () => {
   return (
     <main className="b-violet-500">
       {/* Nav Links */}

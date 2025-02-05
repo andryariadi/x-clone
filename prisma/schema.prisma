@@ -43,8 +43,8 @@ model Post {
   isSensitive Boolean  @default(false)
 
   // RELATIONS
-  user   User   @relation(fields: [userId], references: [id])
   userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   rePostId Int?
   rePost   Post?  @relation("RePosts", fields: [rePostId], references: [id])
@@ -65,9 +65,9 @@ model Like {
 
   // RELATIONS
   userId String
-  postId Int
-
   user User @relation(fields: [userId], references: [id])
+
+  postId Int
   post Post @relation(fields: [postId], references: [id])
 }
 
@@ -77,9 +77,9 @@ model SavedPosts {
 
   // RELATIONS
   userId String
-  postId Int
-
   user User @relation(fields: [userId], references: [id])
+
+  postId Int
   post Post @relation(fields: [postId], references: [id])
 }
 
@@ -89,8 +89,8 @@ model Follow {
 
   // RELATIONS
   followerId  String
-  followingId String
-
   follower  User @relation("UserFollowers", fields: [followerId], references: [id])
+
+  followingId String
   following User @relation("UserFollowings", fields: [followingId], references: [id])
 }
