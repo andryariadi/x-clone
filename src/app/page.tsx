@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Homepage = () => {
   return (
-    <div className="">
+    <main className="b-violet-500">
       {/* Nav Links */}
       <nav className="px-4 pt-4 flex justify-between text-textGray font-bold border-b-[1px] border-borderGray">
         <Link className="pb-3 flex items-center border-b-4 border-iconBlue" href="/">
@@ -27,7 +27,7 @@ const Homepage = () => {
       <Share />
 
       <Feed />
-    </div>
+    </main>
   );
 };
 

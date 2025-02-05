@@ -1,14 +1,14 @@
-import Post from "./Post"
+import Post from "./Post";
 
 const Feed = () => {
   return (
-    <div className=''>
-      <Post/>
-      <Post/>
-      <Post/>
-      <Post/>
-    </div>
-  )
-}
+    <section className="b-rose-600">
+      <Post />
+      <Post />
+      <Post />
+      <Post />
+    </section>
+  );
+};
 
-export default Feed
+export default Feed;

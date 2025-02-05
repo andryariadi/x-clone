@@ -9,18 +9,7 @@ type VideoTypes = {
 };
 
 const Video = ({ path, className }: VideoTypes) => {
-  return (
-    <IKVideo
-      urlEndpoint={urlEndpoint}
-      path={path}
-      className={className}
-      transformation={[
-        { width: "1920", height: "1080", q: "90" },
-        { raw: "l-text,i-LamaDev,fs-100,co-white,l-end" },
-      ]}
-      controls
-    />
-  );
+  return <IKVideo urlEndpoint={urlEndpoint} path={path} className={className} transformation={[{ width: "1920", height: "1080", q: "90" }, { raw: "l-text,i-AndryAriadi,fs-100,co-white,l-end" }]} controls />;
 };
 
 export default Video;

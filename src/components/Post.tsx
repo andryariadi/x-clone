@@ -1,4 +1,4 @@
-import { imagekit } from "@/utils";
+import { imagekit } from "@/libs/utils";
 import Image from "./Image";
 import ImageNext from "next/image";
 import PostInfo from "./PostInfo";
@@ -18,25 +18,23 @@ interface FileDetailsResponse {
 const Post = async ({ type }: { type?: "status" | "comment" }) => {
   // FETCH POST MEDIA
 
-  // const getFileDetails = async (
-  //   fileId: string
-  // ): Promise<FileDetailsResponse> => {
-  //   return new Promise((resolve, reject) => {
-  //     imagekit.getFileDetails(fileId, function (error, result) {
-  //       if (error) reject(error);
-  //       else resolve(result as FileDetailsResponse);
-  //     });
-  //   });
-  // };
+  const getFileDetails = async (fileId: string): Promise<FileDetailsResponse> => {
+    return new Promise((resolve, reject) => {
+      imagekit.getFileDetails(fileId, function (error, result) {
+        if (error) reject(error);
+        else resolve(result as FileDetailsResponse);
+      });
+    });
+  };
 
-  // const fileDetails = await getFileDetails("675d943be375273f6003858f");
+  const fileDetails = await getFileDetails("67a1b294432c476416c41eee");
 
-  // console.log(fileDetails);
+  console.log(fileDetails);
 
   return (
-    <div className="p-4 border-y-[1px] border-borderGray">
+    <div className="b-emerald-500 p-4 border-y-[1px] border-borderGray">
       {/* POST TYPE */}
-      <div className="flex items-center gap-2 text-sm text-textGray mb-2 from-bold">
+      <div className="b-pink-600 flex items-center gap-2 text-sm text-textGray mb-2 from-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
           <path
             fill="#71767b"
@@ -45,53 +43,58 @@ const Post = async ({ type }: { type?: "status" | "comment" }) => {
         </svg>
         <span>Lama Dev reposted</span>
       </div>
+
       {/* POST CONTENT */}
-      <div className={`flex gap-4 ${type === "status" && "flex-col"}`}>
+      <div className={`b-fuchsia-500 flex gap-4 ${type === "status" && "flex-col"}`}>
         {/* AVATAR */}
-        <div className={`${type === "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>
+        <div className={`b-lime-600 ${type === "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>
           <Image path="general/avatar.png" alt="" w={100} h={100} tr={true} />
         </div>
+
         {/* CONTENT */}
-        <div className="flex-1 flex flex-col gap-2">
-          {/* TOP */}
-          <div className="w-full flex justify-between">
+        <div className="b-sky-600 flex-1 flex flex-col gap-2">
+          {/* User Info */}
+          <div className="b-green-700 w-full flex justify-between">
             <Link href={`/lamaWebDev`} className="flex gap-4">
+              {/* Avatar */}
               <div className={`${type !== "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>
                 <Image path="general/avatar.png" alt="" w={100} h={100} tr={true} />
               </div>
+
+              {/* Uername */}
               <div className={`flex items-center gap-2 flex-wrap ${type === "status" && "flex-col gap-0 !items-start"}`}>
                 <h1 className="text-md font-bold">Lama Dev</h1>
                 <span className={`text-textGray ${type === "status" && "text-sm"}`}>@lamaWebDev</span>
                 {type !== "status" && <span className="text-textGray">1 day ago</span>}
               </div>
             </Link>
+
+            {/* Post Info */}
             <PostInfo />
           </div>
-          {/* TEXT & MEDIA */}
+
+          {/* Caption */}
           <Link href={`/lamaWebDev/status/123`}>
             <p className={`${type === "status" && "text-lg"}`}>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, animi. Laborum commodi aliquam alias molestias odio, ab in, reprehenderit excepturi temporibus, ducimus necessitatibus fugiat iure nam voluptas soluta pariatur
               inventore.
             </p>
           </Link>
+
+          {/* Image Media */}
           <Image path="general/post.jpeg" alt="" w={600} h={600} />
-          <ImageNext src="/general/post.jpeg" alt="" width={600} height={600} />
+          {/* <ImageNext src="/general/post.jpeg" alt="" width={600} height={600} /> */}
+
           {/* AFTER FETCHING THE POST MEDIA */}
-          {/* {fileDetails && fileDetails.fileType === "image" ? (
-            <Image
-              path={fileDetails.filePath}
-              alt=""
-              w={fileDetails.width}
-              h={fileDetails.height}
-              className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""}
-            />
+          {fileDetails && fileDetails.fileType === "image" ? (
+            <Image path={fileDetails.filePath} alt="" w={fileDetails.width} h={fileDetails.height} className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""} />
           ) : (
-            <Video
-              path={fileDetails.filePath}
-              className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""}
-            />
-          )} */}
+            <Video path={fileDetails.filePath} className={fileDetails.customMetadata?.sensitive ? "blur-lg" : ""} />
+          )}
+
           {type === "status" && <span className="text-textGray">8:41 PM · Dec 5, 2024</span>}
+
+          {/* Post Interactions */}
           <PostInteractions />
         </div>
       </div>
