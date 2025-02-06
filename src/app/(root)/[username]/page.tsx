@@ -12,7 +12,7 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
     },
   });
 
-  console.log({ user }, "<---userpage");
+  console.log({ user }, "<---userprofile");
 
   return (
     <div className="-rose-500">

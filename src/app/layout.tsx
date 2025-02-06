@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import QueryProvider from "@/providers/QueryProvider";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${outfit.className} antialiased`}>{children}</body>
-      </html>
+      <QueryProvider>
+        <html lang="en">
+          <body className={`${outfit.className} antialiased`}>{children}</body>
+        </html>
+      </QueryProvider>
     </ClerkProvider>
   );
 }
