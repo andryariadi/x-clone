@@ -48,44 +48,53 @@ const SignUpPage = () => {
             {/* SignUp with Credentials */}
             <div className="flex flex-col gap-4">
               Sign up with Credentials
+              {/* Username Input */}
               <Clerk.Field name="username" className="flex flex-col gap-2">
                 <Clerk.Input className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" placeholder="Username" />
                 <Clerk.FieldError className="text-red-300 text-sm" />
               </Clerk.Field>
+              {/* Email Input */}
               <Clerk.Field name="emailAddress" className="flex flex-col gap-2">
                 <Clerk.Input className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" placeholder="E-mail" />
                 <Clerk.FieldError className="text-red-300 text-sm" />
               </Clerk.Field>
+              {/* Password Input */}
               <Clerk.Field name="password" className="flex flex-col gap-2">
                 <Clerk.Input className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" placeholder="Password" />
                 <Clerk.FieldError className="text-red-300 text-sm" />
               </Clerk.Field>
+              {/* Captcha Button */}
               <SignUp.Captcha />
+              {/* Submit Button */}
               <SignUp.Action submit className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center ">
                 Sign up
               </SignUp.Action>
             </div>
           </SignUp.Step>
 
+          {/* Username for Social Media Auth (Google or Apple) */}
           <SignUp.Step name="continue" className="flex flex-col gap-4">
             <Clerk.Field name="username">
               <Clerk.Input placeholder="username" className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" />
               <Clerk.FieldError className="text-red-300 text-sm" />
             </Clerk.Field>
 
+            {/* Continue Link */}
             <SignUp.Action submit className="w-72 text-center text-iconBlue underline">
               Continue
             </SignUp.Action>
           </SignUp.Step>
 
           {/* Email Verification */}
-          <SignUp.Step name="verifications">
+          <SignUp.Step name="verifications" className="w-fit flex flex-col gap-2">
             <SignUp.Strategy name="email_code">
               <h1 className="text-sm mb-2">Check your e-mail</h1>
+              {/* Verification Code Input */}
               <Clerk.Field name="code" className="flex flex-col gap-4">
                 <Clerk.Input placeholder="Verification code" className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" />
                 <Clerk.FieldError className="text-red-300 text-sm" />
               </Clerk.Field>
+              {/* Verify Button */}
               <SignUp.Action submit className="mt-2 underline text-iconBlue text-sm">
                 Verify
               </SignUp.Action>

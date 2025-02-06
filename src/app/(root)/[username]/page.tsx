@@ -1,12 +1,23 @@
 import Feed from "@/components/Feed";
 import Image from "@/components/Image";
+import { prisma } from "@/libs/prisma.config";
 import Link from "next/link";
 
-const UserPage = () => {
+const UserPage = async ({ params }: { params: Promise<{ username: string }> }) => {
+  const { username } = await params;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      username,
+    },
+  });
+
+  console.log({ user }, "<---userpage");
+
   return (
-    <div className="bg-rose-500">
+    <div className="-rose-500">
       {/* PROFILE TITLE */}
-      <div className="bg-violet-500 flex items-center gap-5 sticky top-0 backdrop-blur-md p-4 z-10 bg-[#00000084]">
+      <div className="-violet-500 flex items-center gap-5 sticky top-0 backdrop-blur-md p-4 z-10 bg-[#00000084]">
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />
         </Link>
@@ -14,9 +25,9 @@ const UserPage = () => {
       </div>
 
       {/* INFO */}
-      <div className="bg-cyan-500">
+      <div className="-cyan-500">
         {/* COVER & AVATAR CONTAINER */}
-        <div className="bg-fuchsia-600 relative w-full">
+        <div className="-fuchsia-600 relative w-full">
           {/* COVER */}
           <div className="w-full aspect-[3/1] relative">
             <Image path="general/cover.jpg" alt="" w={600} h={200} tr={true} />
@@ -28,7 +39,7 @@ const UserPage = () => {
           </div>
         </div>
 
-        <div className="bg-amber-500 flex w-full items-center justify-end gap-2 p-2">
+        <div className="b-amber-500 flex w-full items-center justify-end gap-2 p-2">
           <div className="w-9 h-9 flex items-center justify-center rounded-full border-[1px] border-gray-500 cursor-pointer">
             <Image path="icons/more.svg" alt="more" w={20} h={20} />
           </div>
@@ -42,7 +53,7 @@ const UserPage = () => {
         </div>
 
         {/* USER DETAILS */}
-        <div className="bg-emerald-600 p-4 flex flex-col gap-2">
+        <div className="b-emerald-600 p-4 flex flex-col gap-2">
           {/* USERNAME & HANDLE */}
           <div className="">
             <h1 className="text-2xl font-bold">Lama Dev</h1>
@@ -78,7 +89,7 @@ const UserPage = () => {
       </div>
 
       {/* FEED */}
-      <Feed />
+      <Feed userProfileId={user?.id} />
     </div>
   );
 };

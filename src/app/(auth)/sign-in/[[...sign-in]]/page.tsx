@@ -6,9 +6,9 @@ import Link from "next/link";
 
 const SignInPage = () => {
   return (
-    <div className="bg-sky-500 h-screen flex items-center justify-between p-8">
+    <div className="b-sky-500 h-screen flex items-center justify-between p-8">
       {/* Logo */}
-      <div className="bg-amber-500 hidden lg:flex w-1/2 items-center justify-center">
+      <div className="b-amber-500 hidden lg:flex w-1/2 items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 24 24">
           <path
             fill="white"
@@ -18,7 +18,7 @@ const SignInPage = () => {
       </div>
 
       {/* Form Auth */}
-      <div className="bg-rose-500 w-full lg:w-1/2 flex flex-col gap-4">
+      <div className="b-rose-500 w-full lg:w-1/2 flex flex-col gap-4">
         {/* Title */}
         <h1 className="text-2xl xsm:text-4xl md:text-6xl font-bold">Happening now</h1>
         <h1 className="text-2xl ">Join today.</h1>
@@ -52,7 +52,7 @@ const SignInPage = () => {
               <Clerk.FieldError className="text-red-300 text-sm" />
             </Clerk.Field>
 
-            {/* Continue Button */}
+            {/* Continue Link */}
             <SignIn.Action submit className="mt-2 text-sm underline w-72 text-center text-iconBlue">
               Continue
             </SignIn.Action>
@@ -60,31 +60,38 @@ const SignInPage = () => {
 
           {/* Password Input */}
           <SignIn.Step name="verifications">
+            {/* Password */}
             <SignIn.Strategy name="password">
               <Clerk.Field name="password" className="flex flex-col gap-2">
                 <Clerk.Input placeholder="password" className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" />
                 <Clerk.FieldError className="text-red-300 text-sm" />
               </Clerk.Field>
+
+              {/* Continue Link & Forgot Password Navigate */}
               <div className="flex flex-col gap-2">
                 <SignIn.Action submit className="mt-2 text-sm underline w-72 text-center text-iconBlue">
                   Continue
                 </SignIn.Action>
+
                 <SignIn.Action navigate="forgot-password" className="mt-2 text-sm underline w-72 text-center ">
                   Forgot Password?
                 </SignIn.Action>
               </div>
             </SignIn.Strategy>
 
+            {/* Reset Password Email Code */}
             <SignIn.Strategy name="reset_password_email_code">
               <p className="text-sm mb-2">
                 We sent a code to <SignIn.SafeIdentifier />.
               </p>
 
+              {/* Input Verification Code */}
               <Clerk.Field name="code" className="flex flex-col gap-2">
                 <Clerk.Input className="py-2 px-6 rounded-full text-black w-72 placeholder:text-sm" placeholder="Verification Code" />
                 <Clerk.FieldError className="text-red-300 text-sm" />
               </Clerk.Field>
 
+              {/* Continue Link */}
               <SignIn.Action submit className="mt-2 text-sm underline w-72 text-center text-iconBlue">
                 Continue
               </SignIn.Action>
@@ -128,7 +135,7 @@ const SignInPage = () => {
             <div className="h-px bg-borderGray flex-grow"></div>
           </div>
 
-          {/* Sign Up Link */}
+          {/* Signup Link */}
           <Link href="/sign-up" className="bg-iconBlue rounded-full p-2 text-white font-bold w-72 text-center">
             Create Account
           </Link>
