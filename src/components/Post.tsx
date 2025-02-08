@@ -78,8 +78,8 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
         {/* CONTENT */}
         <div className="b-sky-600 flex-1 flex flex-col gap-2">
           {/* User Info */}
-          <div className="b-green-700 w-full flex justify-between">
-            <Link href={`/${originalPost.user.username}`} className="flex gap-4">
+          <div className="bg-green-700 w-full flex items-center justify-between">
+            <Link href={`/${originalPost.user.username}`} className="flex items-center gap-4">
               {/* Avatar */}
               <div className={`${type !== "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>
                 <Image path={originalPost.user.img || "general/noAvatar.jpg"} alt="" w={100} h={100} tr={true} />
@@ -98,7 +98,7 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
           </div>
           Dev
           {/* Caption */}
-          <Link href={`/lamaWebDev/status/123`}>
+          <Link href={`/${originalPost.user.username}/status/${originalPost.id}`}>
             <p className={`${type === "status" && "text-lg"}`}>{originalPost.desc}</p>
           </Link>
           {/* Image Media */}
