@@ -40,6 +40,55 @@ const Feed = async ({ userProfileId }: { userProfileId?: string }) => {
           img: true,
         },
       },
+      rePost: {
+        include: {
+          user: {
+            select: {
+              displayName: true,
+              username: true,
+              img: true,
+            },
+          },
+          _count: {
+            select: {
+              comments: true,
+              likes: true,
+              rePosts: true,
+            },
+          },
+          likes: {
+            where: { userId: currentUserId },
+            select: { id: true },
+          },
+          rePosts: {
+            where: { userId: currentUserId },
+            select: { id: true },
+          },
+          saves: {
+            where: { userId: currentUserId },
+            select: { id: true },
+          },
+        },
+      },
+      _count: {
+        select: {
+          comments: true,
+          likes: true,
+          rePosts: true,
+        },
+      },
+      likes: {
+        where: { userId: currentUserId },
+        select: { id: true },
+      },
+      rePosts: {
+        where: { userId: currentUserId },
+        select: { id: true },
+      },
+      saves: {
+        where: { userId: currentUserId },
+        select: { id: true },
+      },
     },
     orderBy: { createdAt: "desc" },
     take: 3,

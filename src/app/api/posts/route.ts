@@ -15,14 +15,9 @@ export async function GET(request: NextRequest) {
     const page = searchParams.get("cursor");
     const LIMIT = 3;
 
-    // Validate userProfileId if provided
-    // if (userProfileId && !/^[a-zA-Z0-9_-]+$/.test(userProfileId)) {
-    //   return NextResponse.json({ error: "Invalid user ID format" }, { status: 400 });
-    // }
-
     const whereCondition =
       userProfileId !== "undefined" // Check if userProfileId is not 'undefined'
-        ? { userId: userProfileId, parentPostId: null }
+        ? { userId: userProfileId || undefined }
         : {
             parentPostId: null,
             userId: {
@@ -52,6 +47,55 @@ export async function GET(request: NextRequest) {
             username: true,
             img: true,
           },
+        },
+        rePost: {
+          include: {
+            user: {
+              select: {
+                displayName: true,
+                username: true,
+                img: true,
+              },
+            },
+            _count: {
+              select: {
+                comments: true,
+                likes: true,
+                rePosts: true,
+              },
+            },
+            likes: {
+              where: { userId: currentUserId },
+              select: { id: true },
+            },
+            rePosts: {
+              where: { userId: currentUserId },
+              select: { id: true },
+            },
+            saves: {
+              where: { userId: currentUserId },
+              select: { id: true },
+            },
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+            rePosts: true,
+          },
+        },
+        likes: {
+          where: { userId: currentUserId },
+          select: { id: true },
+        },
+        rePosts: {
+          where: { userId: currentUserId },
+          select: { id: true },
+        },
+        saves: {
+          where: { userId: currentUserId },
+          select: { id: true },
         },
       },
       orderBy: { createdAt: "desc" },

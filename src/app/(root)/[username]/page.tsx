@@ -1,14 +1,29 @@
 import Feed from "@/components/Feed";
 import Image from "@/components/Image";
 import { prisma } from "@/libs/prisma.config";
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 const UserPage = async ({ params }: { params: Promise<{ username: string }> }) => {
   const { username } = await params;
+  const { userId: currentUserId } = await auth();
+
+  if (!currentUserId) return;
 
   const user = await prisma.user.findUnique({
     where: {
       username,
+    },
+    include: {
+      _count: {
+        select: {
+          followers: true,
+          followings: true,
+        },
+      },
+      followings: {
+        where: { followerId: currentUserId },
+      },
     },
   });
 
@@ -21,7 +36,7 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />
         </Link>
-        <h1 className="font-bold text-lg">Lama Dev</h1>
+        <h1 className="font-bold text-lg">{user?.displayName}</h1>
       </div>
 
       {/* INFO */}
@@ -30,12 +45,12 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
         <div className="-fuchsia-600 relative w-full">
           {/* COVER */}
           <div className="w-full aspect-[3/1] relative">
-            <Image path="general/cover.jpg" alt="" w={600} h={200} tr={true} />
+            <Image path={user?.cover || "general/cover.jpg"} alt="" w={600} h={200} tr={true} />
           </div>
 
           {/* AVATAR */}
           <div className="w-1/6 aspect-square rounded-full overflow-hidden border-4 border-black bg-gray-300 absolute left-4 -translate-y-1/2">
-            <Image path="general/avatar.png" alt="" w={70} h={70} tr={true} />
+            <Image path={user?.img || "general/noAvatar.jpg"} alt="" w={70} h={70} tr={true} />
           </div>
         </div>
 
@@ -56,32 +71,40 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
         <div className="b-emerald-600 p-4 flex flex-col gap-2">
           {/* USERNAME & HANDLE */}
           <div className="">
-            <h1 className="text-2xl font-bold">Lama Dev</h1>
-            <span className="text-textGray text-sm">@lamaWebDev</span>
+            <h1 className="text-2xl font-bold">{user?.displayName}</h1>
+            <span className="text-textGray text-sm">@{user?.username}</span>
           </div>
 
-          <p>Lama Dev Youtube Channel</p>
+          {user?.bio && <p>{user?.bio}</p>}
 
           {/* JOB & LOCATION & DATE */}
           <div className="flex gap-4 text-textGray text-[15px]">
+            {user?.location && (
+              <div className="flex items-center gap-2">
+                <Image path="icons/userLocation.svg" alt="location" w={20} h={20} />
+                <span>{user.location}</span>
+              </div>
+            )}
             <div className="flex items-center gap-2">
-              {/* <Image path="icons/userLocation.svg" alt="location" w={20} h={20} /> */}
-              <span>USA</span>
-            </div>
-            <div className="flex items-center gap-2">
-              {/* <Image path="icons/date.svg" alt="date" w={20} h={20} /> */}
-              <span>Joined May 2021</span>
+              <Image path="icons/date.svg" alt="date" w={20} h={20} />
+              <span>
+                Joined {""}
+                {new Date((user?.createdAt ?? "").toString()).toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
             </div>
           </div>
 
           {/* FOLLOWINGS & FOLLOWERS */}
           <div className="flex gap-4">
             <div className="flex items-center gap-2">
-              <span className="font-bold">100</span>
+              <span className="font-bold">{user?._count.followers}</span>
               <span className="text-textGray text-[15px]">Followers</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold">100</span>
+              <span className="font-bold">{user?._count.followings}</span>
               <span className="text-textGray text-[15px]">Followings</span>
             </div>
           </div>
