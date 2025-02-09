@@ -78,7 +78,7 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
         {/* CONTENT */}
         <div className="b-sky-600 flex-1 flex flex-col gap-2">
           {/* User Info */}
-          <div className="bg-green-700 w-full flex items-center justify-between">
+          <div className="b-green-700 w-full flex items-center justify-between">
             <Link href={`/${originalPost.user.username}`} className="flex items-center gap-4">
               {/* Avatar */}
               <div className={`${type !== "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>

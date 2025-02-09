@@ -23,7 +23,6 @@ const StatusPage = async ({ params }: { params: Promise<{ username: string; post
           img: true,
         },
       },
-
       _count: {
         select: {
           comments: true,
@@ -43,6 +42,37 @@ const StatusPage = async ({ params }: { params: Promise<{ username: string; post
         where: { userId: currentUserId },
         select: { id: true },
       },
+      comments: {
+        include: {
+          user: {
+            select: {
+              displayName: true,
+              username: true,
+              img: true,
+            },
+          },
+
+          _count: {
+            select: {
+              comments: true,
+              likes: true,
+              rePosts: true,
+            },
+          },
+          likes: {
+            where: { userId: currentUserId },
+            select: { id: true },
+          },
+          rePosts: {
+            where: { userId: currentUserId },
+            select: { id: true },
+          },
+          saves: {
+            where: { userId: currentUserId },
+            select: { id: true },
+          },
+        },
+      },
     },
   });
 
@@ -51,7 +81,7 @@ const StatusPage = async ({ params }: { params: Promise<{ username: string; post
   console.log({ username, postId, post }, "<---singlePost");
 
   return (
-    <div className="bg-amber-500">
+    <div className="b-amber-500">
       <header className="flex items-center gap-5 sticky top-0 backdrop-blur-md p-4 z-10 bg-[#00000084]">
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />
@@ -63,7 +93,7 @@ const StatusPage = async ({ params }: { params: Promise<{ username: string; post
       <Post type="status" post={post} />
 
       {/* Comments */}
-      <Comments />
+      <Comments comments={post.comments} postId={post.id} username={post.user.username} />
     </div>
   );
 };

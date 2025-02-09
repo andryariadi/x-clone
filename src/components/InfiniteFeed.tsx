@@ -34,7 +34,7 @@ const InfiniteFeed = ({ userProfileId }: { userProfileId?: string }) => {
       hasMore={!!hasNextPage}
       loader={
         <p style={{ textAlign: "center" }}>
-          <b>Loading...</b>
+          <b>Loading posts...</b>
         </p>
       }
       endMessage={
