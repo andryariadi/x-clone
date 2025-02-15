@@ -95,7 +95,7 @@ const Feed = async ({ userProfileId }: { userProfileId?: string }) => {
     skip: 0,
   });
 
-  console.log({ postsTotal: posts.length, userProfileId, currentUserId }, "<---feedcomponent");
+  // console.log({ postsTotal: posts.length, userProfileId, currentUserId }, "<---feedcomponent");
 
   return (
     <section className="b-rose-600">

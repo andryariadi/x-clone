@@ -40,7 +40,7 @@ const Recommendations = async () => {
     },
   });
 
-  console.log({ currentUserId, followingIds, followedUserIds, friendRecommendations }, "<---recommendations");
+  // console.log({ currentUserId, followingIds, followedUserIds, friendRecommendations }, "<---recommendations");
 
   return (
     <div className="b-rose-500 p-3 rounded-2xl border-[1px] border-borderGray flex flex-col gap-3">

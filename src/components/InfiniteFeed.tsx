@@ -25,7 +25,7 @@ const InfiniteFeed = ({ userProfileId }: { userProfileId?: string }) => {
 
   const allPosts = data?.pages.flatMap((page) => page.posts) || [];
 
-  console.log({ data, userProfileId, allPosts }, "<---infinitefeed");
+  // console.log({ data, userProfileId, allPosts }, "<---infinitefeed");
 
   return (
     <InfiniteScroll
