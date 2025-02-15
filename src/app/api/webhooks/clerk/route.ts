@@ -1,6 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { prisma } from "@/libs/prisma.config";
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
@@ -51,6 +52,37 @@ export async function POST(req: Request) {
   const eventType = evt.type;
   console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
   console.log("Webhook payload:", body);
+
+  if (eventType === "user.created") {
+    try {
+      await prisma.user.create({
+        data: {
+          id: evt.data.id,
+          username: JSON.parse(body).data.username,
+          email: JSON.parse(body).data.email_addresses[0].email_address,
+          img: JSON.parse(body).image_url || "",
+        },
+      });
+      return new Response("User created", { status: 200 });
+    } catch (err) {
+      console.log(err);
+      return new Response("Error: Failed to create a user!", {
+        status: 500,
+      });
+    }
+  }
+
+  if (eventType === "user.deleted") {
+    try {
+      await prisma.user.delete({ where: { id: evt.data.id } });
+      return new Response("User deleted", { status: 200 });
+    } catch (err) {
+      console.log(err);
+      return new Response("Error: Failed to create a user!", {
+        status: 500,
+      });
+    }
+  }
 
   return new Response("Webhook received", { status: 200 });
 }
