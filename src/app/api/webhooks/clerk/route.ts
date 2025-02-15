@@ -63,9 +63,10 @@ export async function POST(req: Request) {
           img: JSON.parse(body).image_url || "",
         },
       });
+
       return new Response("User created", { status: 200 });
     } catch (err) {
-      console.log(err);
+      console.log(err, "<---errorCreateUser");
       return new Response("Error: Failed to create a user!", {
         status: 500,
       });
@@ -75,9 +76,10 @@ export async function POST(req: Request) {
   if (eventType === "user.deleted") {
     try {
       await prisma.user.delete({ where: { id: evt.data.id } });
+
       return new Response("User deleted", { status: 200 });
     } catch (err) {
-      console.log(err);
+      console.log(err, "<---errorDeleteUser");
       return new Response("Error: Failed to create a user!", {
         status: 500,
       });
