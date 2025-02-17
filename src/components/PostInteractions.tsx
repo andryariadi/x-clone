@@ -1,6 +1,6 @@
 "use client";
 
-import { likePost } from "@/libs/actions";
+import { likePost, repostPost, savedPost } from "@/libs/actions";
 import { useOptimistic, useState } from "react";
 
 type PostInteractionProps = {
@@ -34,7 +34,7 @@ const PostInteractions = ({ postId, count, isLiked, isReposted, isSaved }: PostI
 
   const handleRepostPost = async () => {
     addOptimistic("rePost");
-    await likePost(postId);
+    await repostPost(postId);
     setInteractionPost((prev) => {
       return {
         ...prev,
@@ -46,7 +46,7 @@ const PostInteractions = ({ postId, count, isLiked, isReposted, isSaved }: PostI
 
   const handleSavePost = async () => {
     addOptimistic("save");
-    await likePost(postId);
+    await savedPost(postId);
     setInteractionPost((prev) => {
       return {
         ...prev,
@@ -122,9 +122,9 @@ const PostInteractions = ({ postId, count, isLiked, isReposted, isSaved }: PostI
         </form>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ">
         {/* Bookmark */}
-        <form action={handleSavePost}>
+        <form action={handleSavePost} className="flex items-center justify-center">
           <button className="cursor-pointer group">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
               <path

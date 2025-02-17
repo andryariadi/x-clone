@@ -63,3 +63,63 @@ export const likePost = async (postId: number) => {
     console.log(error, "<----errorLikePost");
   }
 };
+
+export const repostPost = async (postId: number) => {
+  try {
+    const { userId: currentUserId } = await auth();
+
+    if (!currentUserId) return;
+
+    const existingRepost = await prisma.post.findFirst({
+      where: {
+        userId: currentUserId,
+        rePostId: postId,
+      },
+    });
+
+    if (existingRepost) {
+      await prisma.post.delete({
+        where: { id: existingRepost.id },
+      });
+    } else {
+      await prisma.post.create({
+        data: {
+          userId: currentUserId,
+          rePostId: postId,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error, "<---errorRepostPost");
+  }
+};
+
+export const savedPost = async (postId: number) => {
+  try {
+    const { userId: currentUserId } = await auth();
+
+    if (!currentUserId) return;
+
+    const existingSavedPost = await prisma.savedPosts.findFirst({
+      where: {
+        userId: currentUserId,
+        postId,
+      },
+    });
+
+    if (existingSavedPost) {
+      await prisma.savedPosts.delete({
+        where: { id: existingSavedPost.id },
+      });
+    } else {
+      await prisma.savedPosts.create({
+        data: {
+          userId: currentUserId,
+          postId,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error, "<---errorSavedPost");
+  }
+};
