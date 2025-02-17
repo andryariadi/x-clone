@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useActionState, useEffect, useRef, useState } from "react";
 import Image from "./Image";
 import NextImage from "next/image";
-import { shareAction } from "@/libs/actions";
+import { addPost, shareAction } from "@/libs/actions";
 import ImageEditor from "./ImageEditor";
+import { useUser } from "@clerk/nextjs";
 
 const Share = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -17,6 +18,8 @@ const Share = () => {
     sensitive: false,
   });
 
+  const { user } = useUser();
+
   const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setMedia(e.target.files[0]);
@@ -25,17 +28,38 @@ const Share = () => {
 
   const previewURL = media ? URL.createObjectURL(media) : null;
 
+  const [statePost, formAction, isPending] = useActionState(addPost, {
+    success: false,
+    error: false,
+  });
+
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  useEffect(() => {
+    if (statePost.success) {
+      formRef.current?.reset();
+      setMedia(null);
+      setSettings({ type: "original", sensitive: false });
+    }
+  }, [statePost]);
+
   return (
-    <form className="b-amber-700 p-4 flex gap-4" action={(formData) => shareAction(formData, settings)}>
+    <form ref={formRef} action={formAction} className="b-amber-700 p-4 flex gap-4">
       {/* Avatar */}
       <div className="relative w-10 h-10 rounded-full overflow-hidden">
-        <Image path="general/avatar.png" alt="" w={100} h={100} tr={true} />
+        <Image src={user?.imageUrl} alt={user?.username ?? ""} w={100} h={100} tr={true} />
       </div>
 
       {/* Input Form */}
       <div className="flex-1 flex flex-col gap-4">
         {/* Description Input */}
         <input type="text" name="desc" placeholder="What is happening?!" className="bg-transparent outline-none placeholder:text-textGray placeholder:text-lg text-lg" />
+
+        {/* Image Type Input */}
+        <input type="text" name="imgType" hidden readOnly value={settings.type} />
+
+        {/* Sensitive Image Input */}
+        <input type="text" name="isSensitive" hidden readOnly value={settings.sensitive ? "true" : "false"} />
 
         {/* Priview Image */}
         {media?.type.includes("image") && previewURL && (
@@ -85,7 +109,11 @@ const Share = () => {
             <Image path="icons/location.svg" alt="" w={20} h={20} className="cursor-pointer" />
           </div>
 
-          <button className="bg-white text-black text-base font-bold rounded-full py-2 px-4">Post</button>
+          <button disabled={isPending} className="bg-white text-black text-base font-bold rounded-full py-2 px-4 disabled:cursor-not-allowed disabled:bg-slate-200">
+            {isPending ? "Posting..." : "Post"}
+          </button>
+
+          {statePost?.error && <span className="text-red-300 p-4">Something went wrong!</span>}
         </div>
       </div>
     </form>

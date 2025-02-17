@@ -96,14 +96,22 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
             {/* Post Info */}
             <PostInfo />
           </div>
-          Dev
+
           {/* Caption */}
           <Link href={`/${originalPost.user.username}/status/${originalPost.id}`}>
             <p className={`${type === "status" && "text-lg"}`}>{originalPost.desc}</p>
           </Link>
           {/* Image Media */}
-          {originalPost.img && <Image path={originalPost.img} alt="" w={600} h={600} />}
+          {originalPost.img && <Image path={originalPost.img} alt="" w={600} h={originalPost.imgHeight || 600} className={originalPost.isSensitive ? "blur-3xl" : ""} />}
           {/* <ImageNext src="/general/originalPost.jpeg" alt="" width={600} height={600} /> */}
+
+          {/* Video Media */}
+          {originalPost.video && (
+            <div className="rounded-lg overflow-hidden">
+              <Video path={originalPost.video} className={originalPost.isSensitive ? "blur-3xl" : ""} />
+            </div>
+          )}
+
           {type === "status" && <span className="text-textGray">8:41 PM · Dec 5, 2024</span>}
           {/* Post Interactions */}
           <PostInteractions postId={originalPost.id} count={originalPost._count} isLiked={!!originalPost.likes.length} isReposted={!!originalPost.rePosts.length} isSaved={!!originalPost.saves.length} />
