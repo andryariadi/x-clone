@@ -188,6 +188,38 @@ export const addComment = async (prevState: { success: boolean; error: boolean }
   }
 };
 
+export const followUser = async (targetUserId: string) => {
+  try {
+    const { userId: currentUserId } = await auth();
+
+    if (!currentUserId) return;
+
+    const existingFollow = await prisma.follow.findFirst({
+      where: {
+        followerId: currentUserId, // Check if the current user is already following the target user
+        followingId: targetUserId, // Check if the target user is being followed
+      },
+    });
+
+    if (existingFollow) {
+      await prisma.follow.delete({
+        where: {
+          id: existingFollow.id,
+        },
+      });
+    } else {
+      await prisma.follow.create({
+        data: {
+          followerId: currentUserId,
+          followingId: targetUserId,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error, "<----errorFollowUser");
+  }
+};
+
 export const likePost = async (postId: number) => {
   try {
     const { userId: currentUserId } = await auth();

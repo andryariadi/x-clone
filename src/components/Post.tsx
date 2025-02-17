@@ -103,7 +103,6 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
           </Link>
           {/* Image Media */}
           {originalPost.img && <Image path={originalPost.img} alt="" w={600} h={originalPost.imgHeight || 600} className={originalPost.isSensitive ? "blur-3xl" : ""} />}
-          {/* <ImageNext src="/general/originalPost.jpeg" alt="" width={600} height={600} /> */}
 
           {/* Video Media */}
           {originalPost.video && (
