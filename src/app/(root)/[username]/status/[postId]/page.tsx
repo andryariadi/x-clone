@@ -43,6 +43,7 @@ const StatusPage = async ({ params }: { params: Promise<{ username: string; post
         select: { id: true },
       },
       comments: {
+        orderBy: { createdAt: "desc" },
         include: {
           user: {
             select: {

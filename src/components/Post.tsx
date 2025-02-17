@@ -51,7 +51,7 @@ type PostWithDetails = PostType & {
 const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetails }) => {
   const originalPost = post.rePost || post;
 
-  console.log({ type, post, originalPost }, "<----postComponent");
+  // console.log({ type, post, originalPost }, "<----postComponent");
 
   return (
     <div className="b-emerald-500 p-4 border-y-[1px] border-borderGray">

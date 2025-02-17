@@ -3,6 +3,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { imagekit } from "./utils";
 import { prisma } from "./prisma.config";
+import { z } from "zod";
+import { error } from "console";
+import { revalidatePath } from "next/cache";
 
 export const shareAction = async (formData: FormData, settings: { type: "original" | "wide" | "square"; sensitive: boolean }) => {
   const file = formData.get("file") as File;
@@ -121,5 +124,60 @@ export const savedPost = async (postId: number) => {
     }
   } catch (error) {
     console.log(error, "<---errorSavedPost");
+  }
+};
+
+export const addComment = async (prevState: { success: boolean; error: boolean }, formData: FormData) => {
+  try {
+    const { userId: currentUserId } = await auth();
+
+    if (!currentUserId)
+      return {
+        success: false,
+        error: true,
+      };
+
+    const postId = formData.get("postId");
+    const desc = formData.get("desc");
+    const username = formData.get("username");
+
+    const commentSchema = z.object({
+      parentPostId: z.number(),
+      desc: z.string().max(150),
+    });
+
+    const validatedFields = commentSchema.safeParse({
+      parentPostId: Number(postId),
+      desc,
+    });
+
+    if (!validatedFields.success) {
+      console.log(validatedFields.error.flatten().fieldErrors);
+
+      return {
+        success: false,
+        error: true,
+      };
+    }
+
+    await prisma.post.create({
+      data: {
+        ...validatedFields.data,
+        userId: currentUserId,
+      },
+    });
+
+    revalidatePath(`${username}/status/${postId}`);
+
+    return {
+      success: true,
+      error: false,
+    };
+  } catch (error) {
+    console.log(error, "<----errorAddComment");
+    return {
+      success: false,
+      error: true,
+    };
   }
 };
