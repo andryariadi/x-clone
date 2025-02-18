@@ -3,7 +3,7 @@
 import React, { useActionState, useEffect, useRef, useState } from "react";
 import Image from "./Image";
 import NextImage from "next/image";
-import { addPost, shareAction } from "@/libs/actions";
+import { addPost } from "@/libs/actions";
 import ImageEditor from "./ImageEditor";
 import { useUser } from "@clerk/nextjs";
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "./Image";
 import { menuList } from "@/constant";
+import Socket from "./Socket";
 
 const LeftBar = () => {
   return (
@@ -46,6 +47,8 @@ const LeftBar = () => {
 
         <div className="hidden xxl:block cursor-pointer font-bold">...</div>
       </div>
+
+      <Socket />
     </aside>
   );
 };
