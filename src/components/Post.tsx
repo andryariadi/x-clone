@@ -113,7 +113,7 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
 
           {type === "status" && <span className="text-textGray">8:41 PM · Dec 5, 2024</span>}
           {/* Post Interactions */}
-          <PostInteractions postId={originalPost.id} count={originalPost._count} isLiked={!!originalPost.likes.length} isReposted={!!originalPost.rePosts.length} isSaved={!!originalPost.saves.length} />
+          <PostInteractions username={originalPost.user.username} postId={originalPost.id} count={originalPost._count} isLiked={!!originalPost.likes.length} isReposted={!!originalPost.rePosts.length} isSaved={!!originalPost.saves.length} />
         </div>
       </div>
     </div>

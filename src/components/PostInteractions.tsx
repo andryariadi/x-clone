@@ -1,17 +1,20 @@
 "use client";
 
 import { likePost, repostPost, savedPost } from "@/libs/actions";
+import { socket } from "@/Socket";
+import { useUser } from "@clerk/nextjs";
 import { useOptimistic, useState } from "react";
 
 type PostInteractionProps = {
   postId: number;
+  username: string;
   count: { comments: number; likes: number; rePosts: number };
   isLiked: boolean;
   isReposted: boolean;
   isSaved: boolean;
 };
 
-const PostInteractions = ({ postId, count, isLiked, isReposted, isSaved }: PostInteractionProps) => {
+const PostInteractions = ({ postId, username, count, isLiked, isReposted, isSaved }: PostInteractionProps) => {
   const [interactionPost, setInteractionPost] = useState({
     likes: count.likes,
     isLiked,
@@ -20,7 +23,22 @@ const PostInteractions = ({ postId, count, isLiked, isReposted, isSaved }: PostI
     isSaved,
   });
 
+  const { user: currentUser } = useUser();
+
   const handleLikePost = async () => {
+    if (!currentUser) return;
+
+    if (!likeOptimisticState.isLiked) {
+      socket.emit("sendNotification", {
+        receiverUsername: username,
+        data: {
+          senderUsername: currentUser.username,
+          type: "like",
+          link: `/${username}/status/${postId}`,
+        },
+      });
+    }
+
     addOptimistic("like");
     await likePost(postId);
     setInteractionPost((prev) => {
@@ -33,6 +51,19 @@ const PostInteractions = ({ postId, count, isLiked, isReposted, isSaved }: PostI
   };
 
   const handleRepostPost = async () => {
+    if (!currentUser) return;
+
+    if (!likeOptimisticState.isReposted) {
+      socket.emit("sendNotification", {
+        receiverUsername: username,
+        data: {
+          senderUsername: currentUser.username,
+          type: "rePost",
+          link: `/${username}/status/${postId}`,
+        },
+      });
+    }
+
     addOptimistic("rePost");
     await repostPost(postId);
     setInteractionPost((prev) => {
