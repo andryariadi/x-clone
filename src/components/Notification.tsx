@@ -43,7 +43,7 @@ const Notification = () => {
         <div className="relative">
           <Image path={`icons/notification.svg`} alt="Notification" w={20} h={20} />
 
-          {notifications.length > 0 && <div className="absolute -top-4 -right-4 bg-iconBlue w-6 h-6 rounded-full p-2 flex items-center justify-center text-sm">{notifications.length}</div>}
+          {notifications.length > 0 && <div className="absolute -top-3 -right-2 bg-iconBlue w-5 h-5 rounded-full p-2 flex items-center justify-center text-xs">{notifications.length}</div>}
         </div>
         <span className="hidden xxl:inline text-base">Notifications</span>
       </div>

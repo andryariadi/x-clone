@@ -1,12 +1,13 @@
-import { imagekit } from "@/libs/utils";
+// import { imagekit } from "@/libs/utils";
 import Image from "./Image";
-import ImageNext from "next/image";
+// import ImageNext from "next/image";
 import PostInfo from "./PostInfo";
 import PostInteractions from "./PostInteractions";
 import Video from "./Video";
 import Link from "next/link";
 import { Post as PostType } from "@prisma/client";
 import { format } from "timeago.js";
+import UserInformationPost from "./UserInformationPost";
 
 // interface FileDetailsResponse {
 //   width: number;
@@ -71,9 +72,7 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
       {/* POST CONTENT */}
       <div className={`b-fuchsia-500 flex gap-4 ${type === "status" && "flex-col"}`}>
         {/* AVATAR */}
-        <div className={`b-lime-600 ${type === "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>
-          <Image path={originalPost.user.img || "general/noAvatar.jpg"} alt="" w={100} h={100} tr={true} />
-        </div>
+        <UserInformationPost type={type} user={originalPost.user} />
 
         {/* CONTENT */}
         <div className="b-sky-600 flex-1 flex flex-col gap-2">

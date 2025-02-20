@@ -39,10 +39,13 @@ app.prepare().then(() => {
   console.log({ app, handler, httpServer, io }, "<----server1");
 
   io.on("connection", (socket) => {
-    console.dir({ socket }, "<----server2");
+    // console.dir({ socket }, "<----server2");
+    console.log("A user connected:", socket.id);
 
     socket.on("newUser", (username) => {
       addUser(username, socket.id);
+      // console.log("Online users:", onlineUsers);
+      io.emit("userOnline", onlineUsers);
     });
 
     socket.on("sendNotification", ({ receiverUsername, data }) => {
@@ -58,6 +61,8 @@ app.prepare().then(() => {
 
     socket.on("disconnect", () => {
       removeUser(socket.id);
+      // console.log("Online users after disconnect:", onlineUsers);
+      io.emit("userOnline", onlineUsers);
     });
   });
 
