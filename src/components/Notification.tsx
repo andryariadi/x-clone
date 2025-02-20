@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 type NotificationProps = {
   id: string;
   senderUsername: string;
-  type: "like" | "comment" | "rePost" | "follow";
+  type: "like" | "comment" | "rePost" | "follow" | "save";
   link: string;
 };
 
@@ -18,27 +18,61 @@ const Notification = () => {
 
   const router = useRouter();
 
+  // Fungsi untuk menyimpan notifikasi ke localStorage
+  const saveNotificationsToLocalStorage = (notifications: NotificationProps[]) => {
+    localStorage.setItem("notifications", JSON.stringify(notifications));
+  };
+
+  // Fungsi untuk mengambil notifikasi dari localStorage
+  const getNotificationsFromLocalStorage = (): NotificationProps[] => {
+    const storedNotifications = localStorage.getItem("notifications");
+    return storedNotifications ? JSON.parse(storedNotifications) : [];
+  };
+
+  // Saat komponen pertama kali di-mount, ambil notifikasi dari localStorage
   useEffect(() => {
-    socket.on("getNotification", (data: NotificationProps) => {
-      setNotifications((prev) => [...prev, data]);
-    });
+    const storedNotifications = getNotificationsFromLocalStorage();
+    setNotifications(storedNotifications);
   }, []);
 
+  // Dengarkan event "getNotification" dari socket
+  useEffect(() => {
+    const handleNotification = (data: NotificationProps) => {
+      const updatedNotifications = [...notifications, data];
+
+      setNotifications(updatedNotifications);
+      saveNotificationsToLocalStorage(updatedNotifications); // Simpan ke localStorage
+    };
+
+    socket.on("getNotification", handleNotification);
+
+    // Bersihkan listener saat komponen di-unmount
+    return () => {
+      socket.off("getNotification", handleNotification);
+    };
+  }, [notifications]);
+
+  // Handle klik notifikasi
   const handleNotificationClick = (notification: NotificationProps) => {
-    const filteredNotification = notifications.filter((notif) => notif.id !== notification.id);
-    setNotifications(filteredNotification);
+    const filteredNotifications = notifications.filter((notif) => notif.id !== notification.id);
+
+    setNotifications(filteredNotifications);
+    saveNotificationsToLocalStorage(filteredNotifications); // Update localStorage
 
     setOpen(false);
     router.push(notification.link);
   };
 
+  // Reset notifikasi (mark as read)
   const reset = () => {
     setNotifications([]);
+    saveNotificationsToLocalStorage([]); // Hapus semua notifikasi dari localStorage
+
     setOpen(false);
   };
 
   return (
-    <div className="b-amber-500 relative">
+    <div className="relative">
       <div className="p-2 rounded-full hover:bg-[#181818] transition-all duration-300 flex items-center gap-4 cursor-pointer" onClick={() => setOpen(!open)}>
         <div className="relative">
           <Image path={`icons/notification.svg`} alt="Notification" w={20} h={20} />
@@ -56,7 +90,7 @@ const Notification = () => {
           {notifications.map((notif) => (
             <div key={notif.id} className="cursor-pointer text-black" onClick={() => handleNotificationClick(notif)}>
               <b> {notif.senderUsername}</b> {""}
-              {notif.type === "like" ? "liked your post" : notif.type === "rePost" ? "re-posted your post" : notif.type === "comment" ? "replied your post" : "follow you"}
+              {notif.type === "like" ? "liked your post" : notif.type === "rePost" ? "re-posted your post" : notif.type === "comment" ? "replied your post" : notif.type === "save" ? "saved your post" : "followed you"}
             </div>
           ))}
 

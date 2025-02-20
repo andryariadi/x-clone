@@ -1,13 +1,14 @@
 import Link from "next/link";
 import Image from "./Image";
 import { menuList } from "@/constant";
-import Socket from "./Socket";
+// import Socket from "./Socket";
 import Notification from "./Notification";
 import UserInformation from "./UserInformation";
+import Socket from "./Socket";
 
 const LeftBar = () => {
   return (
-    <aside className="b-amber-500 h-screen sticky top-0 z-50 flex flex-col justify-between pt-2 pb-2">
+    <aside className="h-screen sticky top-0 z-50 flex flex-col justify-between pt-2 pb-2">
       {/* LOGO MENU BUTTON */}
       <div className="b-sky-500 flex flex-col gap-4 text-lg items-center xxl:items-start">
         {/* LOGO */}
@@ -18,18 +19,18 @@ const LeftBar = () => {
         {/* MENU LIST */}
         <nav className="flex flex-col gap-2 b-violet-500">
           {menuList.map((item, idx) => (
-            <>
+            <div key={item.id | idx}>
               {idx === 2 && (
-                <div key={item.id | idx}>
+                <div>
                   <Notification />
                 </div>
               )}
 
-              <Link href={item.link} className="p-2 rounded-full hover:bg-[#181818] transition-all duration-300 flex items-center gap-4" key={item.id}>
+              <Link href={item.link} className="p-2 rounded-full hover:bg-[#181818] transition-all duration-300 flex items-center gap-4">
                 <Image path={`icons/${item.icon}`} alt={item.name} w={20} h={20} />
                 <span className="hidden xxl:inline text-base">{item.name}</span>
               </Link>
-            </>
+            </div>
           ))}
         </nav>
 
@@ -46,7 +47,7 @@ const LeftBar = () => {
       {/* USER */}
       <UserInformation />
 
-      {/* <Socket /> */}
+      <Socket />
     </aside>
   );
 };

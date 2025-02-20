@@ -28,12 +28,12 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
     },
   });
 
-  console.log({ user }, "<---userprofile");
+  // console.log({ user }, "<---userprofile");
 
   return (
-    <div className="-rose-500">
+    <div>
       {/* PROFILE TITLE */}
-      <div className="-violet-500 flex items-center gap-5 sticky top-0 backdrop-blur-md p-4 z-10 bg-[#00000084]">
+      <div className="flex items-center gap-5 sticky top-0 backdrop-blur-md p-4 z-10 bg-[#00000084]">
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />
         </Link>
@@ -41,9 +41,9 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
       </div>
 
       {/* INFO */}
-      <div className="-cyan-500">
+      <div>
         {/* COVER & AVATAR CONTAINER */}
-        <div className="-fuchsia-600 relative w-full">
+        <div className="relative w-full">
           {/* COVER */}
           <div className="w-full aspect-[3/1] relative">
             <Image path={user?.cover || "general/cover.jpg"} alt="" w={600} h={200} tr={true} />
@@ -55,7 +55,7 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
           </div>
         </div>
 
-        <div className="b-amber-500 flex w-full items-center justify-end gap-2 p-2">
+        <div className="flex w-full items-center justify-end gap-2 p-2">
           <div className="w-9 h-9 flex items-center justify-center rounded-full border-[1px] border-gray-500 cursor-pointer">
             <Image path="icons/more.svg" alt="more" w={20} h={20} />
           </div>
@@ -66,11 +66,11 @@ const UserPage = async ({ params }: { params: Promise<{ username: string }> }) =
             <Image path="icons/message.svg" alt="more" w={20} h={20} />
           </div>
           {/* Follow Button */}
-          {currentUserId && <FollowButton userId={currentUserId} isFollowed={!!user?.followings.length} />}
+          {currentUserId && <FollowButton userId={currentUserId} isFollowed={!!user?.followings.length} username={username} />}
         </div>
 
         {/* USER DETAILS */}
-        <div className="b-emerald-600 p-4 flex flex-col gap-2">
+        <div className="p-4 flex flex-col gap-2">
           {/* USERNAME & HANDLE */}
           <div className="">
             <h1 className="text-2xl font-bold">{user?.displayName}</h1>

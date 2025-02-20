@@ -3,7 +3,7 @@ import Image from "./Image";
 
 const PopularTags = () => {
   return (
-    <div className="b-sky-600 p-4 rounded-2xl border-[1px] border-borderGray flex flex-col gap-2">
+    <div className="rounded-2xl border-[1px] border-borderGray flex flex-col gap-2">
       <h1 className="text-lg font-bold text-textGrayLight">{"What's"} Happening</h1>
 
       {/* TREND EVENT */}

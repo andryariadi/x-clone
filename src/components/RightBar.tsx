@@ -5,14 +5,14 @@ import Search from "./Search";
 
 const RightBar = () => {
   return (
-    <div className="-amber-500 pt-2 flex flex-col gap-2 sticky top-0 h-max">
+    <div className="pt-2 flex flex-col gap-2 sticky top-0 h-max">
       <Search />
 
       <PopularTags />
 
       <Recommendations />
 
-      <div className="-fuchsia-500 text-textGray text-sm flex gap-x-4 flex-wrap">
+      <div className="text-textGray text-sm flex gap-x-4 flex-wrap">
         <Link href="/">Terms of Service</Link>
         <Link href="/">Privacy Policy</Link>
         <Link href="/">Cookie Policy</Link>

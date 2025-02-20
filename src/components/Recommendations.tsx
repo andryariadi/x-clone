@@ -43,7 +43,7 @@ const Recommendations = async () => {
   // console.log({ currentUserId, followingIds, followedUserIds, friendRecommendations }, "<---recommendations");
 
   return (
-    <div className="b-rose-500 p-3 rounded-2xl border-[1px] border-borderGray flex flex-col gap-3">
+    <div className="p-3 rounded-2xl border-[1px] border-borderGray flex flex-col gap-3">
       {/* USER CARD */}
       {friendRecommendations.map((recomendation) => (
         <div key={recomendation.id} className="flex items-center justify-between">

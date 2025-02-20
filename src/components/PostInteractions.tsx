@@ -76,6 +76,18 @@ const PostInteractions = ({ postId, username, count, isLiked, isReposted, isSave
   };
 
   const handleSavePost = async () => {
+    if (!currentUser) return;
+
+    if (!likeOptimisticState.isSaved) {
+      socket.emit("sendNotification", {
+        receiverUsername: username,
+        data: {
+          senderUsername: currentUser.username,
+          type: "save",
+          link: `/${username}/status/${postId}`,
+        },
+      });
+    }
     addOptimistic("save");
     await savedPost(postId);
     setInteractionPost((prev) => {
@@ -110,10 +122,10 @@ const PostInteractions = ({ postId, username, count, isLiked, isReposted, isSave
     return currentInteractionState;
   });
 
-  console.log({ count, isLiked, isReposted, isSaved }, "<---postInteraction");
+  // console.log({ count, isLiked, isReposted, isSaved }, "<---postInteraction");
 
   return (
-    <div className="b-fuchsia-700 flex items-center justify-between gap-4 lg:gap-16 my-2 text-textGray">
+    <div className="flex items-center justify-between gap-4 lg:gap-16 my-2 text-textGray">
       <div className="flex items-center justify-between flex-1">
         {/* COMMENTS */}
         <div className="flex items-center gap-2 cursor-pointer group">

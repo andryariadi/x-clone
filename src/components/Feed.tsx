@@ -2,6 +2,7 @@ import { prisma } from "@/libs/prisma.config";
 import Post from "./Post";
 import { auth } from "@clerk/nextjs/server";
 import InfiniteFeed from "./InfiniteFeed";
+import { Suspense } from "react";
 
 const Feed = async ({ userProfileId }: { userProfileId?: string }) => {
   const { userId: currentUserId } = await auth();
@@ -98,12 +99,14 @@ const Feed = async ({ userProfileId }: { userProfileId?: string }) => {
   // console.log({ postsTotal: posts.length, userProfileId, currentUserId }, "<---feedcomponent");
 
   return (
-    <section className="b-rose-600">
-      {posts.map((post) => (
-        <div key={post.id}>
-          <Post post={post} />
-        </div>
-      ))}
+    <section>
+      <Suspense fallback={<span>Loading posts...</span>}>
+        {posts.map((post) => (
+          <div key={post.id}>
+            <Post post={post} />
+          </div>
+        ))}
+      </Suspense>
 
       <InfiniteFeed />
     </section>

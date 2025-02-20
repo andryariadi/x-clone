@@ -24,21 +24,23 @@ type PostWithDetails = PostType & {
     username: string;
     img?: string | null;
   };
-  rePost?: PostType & {
-    user: {
-      displayName: string | null;
-      username: string;
-      img?: string | null;
-    };
-    _count: {
-      likes: number;
-      comments: number;
-      rePosts: number;
-    };
-    likes: { id: number }[];
-    rePosts: { id: number }[];
-    saves: { id: number }[];
-  };
+  rePost?:
+    | (PostType & {
+        user: {
+          displayName: string | null;
+          username: string;
+          img?: string | null;
+        };
+        _count: {
+          likes: number;
+          comments: number;
+          rePosts: number;
+        };
+        likes: { id: number }[];
+        rePosts: { id: number }[];
+        saves: { id: number }[];
+      })
+    | null;
   _count: {
     likes: number;
     comments: number;
@@ -55,10 +57,10 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
   // console.log({ type, post, originalPost }, "<----postComponent");
 
   return (
-    <div className="b-emerald-500 p-4 border-y-[1px] border-borderGray">
+    <div className="p-4 border-y-[1px] border-borderGray">
       {/* POST TYPE */}
       {post.rePostId && (
-        <div className="b-pink-600 flex items-center gap-2 text-sm text-textGray mb-2 from-bold">
+        <div className="flex items-center gap-2 text-sm text-textGray mb-2 from-bold">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
             <path
               fill="#71767b"
@@ -70,14 +72,14 @@ const Post = ({ type, post }: { type?: "status" | "comment"; post: PostWithDetai
       )}
 
       {/* POST CONTENT */}
-      <div className={`b-fuchsia-500 flex gap-4 ${type === "status" && "flex-col"}`}>
+      <div className={`flex gap-4 ${type === "status" && "flex-col"}`}>
         {/* AVATAR */}
         <UserInformationPost type={type} user={originalPost.user} />
 
         {/* CONTENT */}
-        <div className="b-sky-600 flex-1 flex flex-col gap-2">
+        <div className="flex-1 flex flex-col gap-2">
           {/* User Info */}
-          <div className="b-green-700 w-full flex items-center justify-between">
+          <div className="w-full flex items-center justify-between">
             <Link href={`/${originalPost.user.username}`} className="flex items-center gap-4">
               {/* Avatar */}
               <div className={`${type !== "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>

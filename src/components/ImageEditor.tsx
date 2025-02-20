@@ -26,7 +26,7 @@ const ImageEditor = ({ onClose, previewURL, settings, setSettings }: ImageEditor
   };
   return (
     <div className="fixed w-screen h-screen left-0 top-0 bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 z-10 flex items-center justify-center">
-      <div className="b-amber-500 rounded-xl p-12 flex flex-col gap-4 py-5">
+      <div className="rounded-xl p-12 flex flex-col gap-4 py-5">
         {/* Top */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

@@ -15,7 +15,7 @@ const UserInformationPost = ({ type, user }: { type?: "status" | "comment"; user
   const isOnline = onlineUsers.some((u) => u.username === user?.username);
 
   return (
-    <div className="b-violet-600 relative">
+    <div className="relative">
       <div className={`${type === "status" && "hidden"} relative w-10 h-10 rounded-full overflow-hidden`}>
         <Image path={user.img || "general/noAvatar.jpg"} alt={user.displayName || user.username} w={100} h={100} tr={true} className="rounded-full" />
       </div>

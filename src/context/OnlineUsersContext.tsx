@@ -67,6 +67,7 @@ export const OnlineUsersProvider = ({ children }: OnlineUsersProviderProps) => {
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
+      socket.off("userOnline");
     };
   }, [user]);
 

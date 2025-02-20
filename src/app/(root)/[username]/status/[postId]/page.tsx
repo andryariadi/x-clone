@@ -79,10 +79,10 @@ const StatusPage = async ({ params }: { params: Promise<{ username: string; post
 
   if (!post) return notFound();
 
-  console.log({ username, postId, post }, "<---singlePost");
+  // console.log({ username, postId, post }, "<---singlePost");
 
   return (
-    <div className="b-amber-500">
+    <div>
       <header className="flex items-center gap-5 sticky top-0 backdrop-blur-md p-4 z-10 bg-[#00000084]">
         <Link href="/">
           <Image path="icons/back.svg" alt="back" w={24} h={24} />

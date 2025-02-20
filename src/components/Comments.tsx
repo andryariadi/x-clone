@@ -45,10 +45,10 @@ const Comments = ({ comments, postId, username }: { comments: CommentWithDetails
     }
   }, [stateComment.success, user?.username, username, postId]);
 
-  console.log({ comments, postId, username, isLoaded, isSignedIn, user }, "<---commentComponent");
+  // console.log({ comments, postId, username, isLoaded, isSignedIn, user }, "<---commentComponent");
 
   return (
-    <div className="b-rose-600">
+    <div>
       {/* Form Comment */}
       {user && (
         <form action={formAction} className="flex items-center justify-between gap-4 p-4 ">
